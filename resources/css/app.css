@@ -1,0 +1,15 @@
+a {
+    text-decoration: none !important;
+}
+.ta-center{
+    text-align: center;
+}
+.text-color-dark{
+    color: rgb(2, 6, 61);
+}
+.pd-left-5{
+    padding-left: 5rem;
+}
+.v-data-table__td{
+    white-space: nowrap;
+  }
