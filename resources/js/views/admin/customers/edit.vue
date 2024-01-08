@@ -14,27 +14,15 @@
             <v-sheet width="1200" class="mt-2 mx-auto p-2">
                 <v-form @submit.prevent>
                   
-                    <v-autocomplete
-                        variant="solo"
-                        label="Employee"
-                        v-model="selected_employee"
-                        :items="fetched_employee_names"
-                        item-text="employee_name"
-                        item-value="employee_id"
-                        search-input
-                    ></v-autocomplete>
-
-          
-               
-                        <v-text-field
-                            type="number"
+                    <v-text-field
                             variant="solo"
-                            v-model="amount"
-                            label="Amount"
+                            v-model="customer_name"
+                            label="Customer Name"
                             :rules="[
-                                v => !!v || 'Amount is required'
+                                v => !!v || 'Customer Name is required'
                             ]"
-                        ></v-text-field>
+                    ></v-text-field>
+               
                 
                       
 
@@ -56,7 +44,7 @@
                     >
                         Update
                     </v-btn>
-                <router-link to="/admin/landbank_billings/">
+                <router-link to="/admin/customers/">
                   <v-btn class="mt-2" color="red-darken-3">Cancel</v-btn>
                 </router-link>
               </v-form>
@@ -80,51 +68,34 @@
 export default {
   data() {
     return { 
-        selected_employee: '', 
-        fetched_employee_names: [],
-        employee_name: '',
+        customer_name: '',
         employee_id: '',
-        amount: '',
         remarks: '',
         employees: [],
-        existingLandbankBilling: [],
     };
   },
   created() {
-    this.fetchExistingLandbankBillings();
-    this.getEmployees(); 
+    this.fetchExistingCustomers(); 
   },
  
   methods: {
-        getEmployees() {
-            axios.get('/api/employees_lib/getList')
-                .then((response) => {
-                    this.employees = response.data;
-                    this.fetched_employee_names = this.employees.map(employee => employee.employee_name);
-
-                
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        },
-        async fetchExistingLandbankBillings() {
+       
+        async fetchExistingCustomers() {
             try {
-                const landbank_billing_id = this.$route.params.id;
-                const response = await axios.get(`/api/landbank_billings/edit/${landbank_billing_id}`);
+                const customer_id = this.$route.params.id;
+                const response = await axios.get(`/api/customer/edit/${customer_id}`);
 
                 if (response.status === 200) {
                     // Use response.data directly, no need for response.json()
-                    const landbank_billing = response.data;
+                    const customer = response.data;
 
                     // Populate the form fields with the fetched data
-                    this.selected_employee = response.data.employee_name;
-                    this.amount = landbank_billing.amount;
-                    this.remarks = landbank_billing.remarks;
+                    this.customer_name = customer.customer_name;
+                    this.remarks = customer.remarks;
                    
 
                 } else {
-                    console.error('Failed to fetch existing landbank_billings.');
+                    console.error('Failed to fetch existing customers.');
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -134,20 +105,19 @@ export default {
 
         async handleUpdate(userId) {
             try {
-                const selectedEmployee = this.employees.find(employee => employee.employee_name === this.selected_employee);
-                const landbank_billing_id = this.$route.params.id;
+              
+                const customer_id = this.$route.params.id;
                 const formData = {
-                    employee_id: selectedEmployee.employee_id,
-                    amount: this.amount,
+                    customer_name: this.customer_name,
                     remarks: this.remarks,
                     user_id: userId,
                 };
 
-                const response = await axios.post(`/api/landbank_billings/update/${landbank_billing_id}`, formData);
+                const response = await axios.post(`/api/customer/update/${customer_id}`, formData);
 
                 if (response.status === 200) {
                     console.log('Data updated successfully!');
-                    this.$router.push({ path: '/admin/landbank_billings', query: { showSuccessEditDialog: 'true' } });
+                    this.$router.push({ path: '/admin/customers', query: { showSuccessEditDialog: 'true' } });
                 } else {
                     console.error('Failed to update data.');
                 }

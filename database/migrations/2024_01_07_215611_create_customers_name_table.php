@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->string('customer_name')->nullable();
-            $table->string('remarks')->nullable();
+        Schema::create('customers', function (Blueprint $table) {
+            $table->id('customer_id');
+            $table->string('first_name', 50);
+            $table->string('last_name', 50);
+            $table->string('email', 100)->nullable();
+            $table->string('phone_number', 15)->nullable();
+            $table->string('address', 255)->nullable();
+            $table->timestamps(); 
         });
     }
 

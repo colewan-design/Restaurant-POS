@@ -58,27 +58,8 @@ class CustomerController extends Controller
     public function edit($id)
     {
        
-        $landbank_bill = LandbankBilling::find($id); 
-    
-        if (!$landbank_bill) {
-            return response()->json(['message' => 'LANDBANK Bill not found'], 404);
-        }
-          // Fetch employee name from employees_lib table using employee_id
-        $employeeData = DB::table('employees_lib')->where('employee_id', $landbank_bill->employee_id)->first();
-    
-        // Check if employee data is found
-        if ($employeeData) {
-            // Create employee name variable
-            $employee_name = $employeeData->first_name . ' ' . $employeeData->middle_name . ' ' . $employeeData->last_name;
-    
-            // Add the employee name to the landbank_bill object
-            $landbank_bill->employee_name = $employee_name;
-        } else {
-            // Set employee_name to null or any default value if employee data is not found
-            $landbank_bill->employee_name = null;
-        }
-        // dd($landbank_bill);
-        return response()->json($landbank_bill, 200); 
+        $customer = Customer::find($id); 
+        return response()->json($customer, 200); 
     }
     
     private function logActivity($action, $landbank_bill, $user_id)
@@ -107,37 +88,18 @@ class CustomerController extends Controller
     {
         $user_id = $request->user_id;
         // dd($request);
-        $landbank_bill = LandbankBilling::find($id);
+        $customer = Customer::find($id);
         $fetch_employee = $request->employee_id;
 
-        if (!$landbank_bill) {
-            return response()->json(['message' => 'LANDBANK Bill not found'], 404);
-        }
+      
 
-        $employee_data = EmployeesLib::where('employee_id', $fetch_employee)->first();
+        $customer->customer_name = $request->input('customer_name');
+        $customer->remarks = $request->input('remarks');
+        $customer->updated_at = Carbon::now('Asia/Manila');
+        $customer->save();
 
-        if ($employee_data) {
-            $first_name = $employee_data->first_name;
-            $middle_name = $employee_data->middle_name;
-            $last_name = $employee_data->last_name;
-
-            $employee_name = "{$first_name} {$middle_name} {$last_name}";
-            // dd($employee_name);
-        } else {
-            // Handle the case where the employee data is not found
-            $employee_name = null;
-        }
-
-        $landbank_bill->employee_id = $request->input('employee_id');
-        $landbank_bill->employee_name = $employee_name;
-        $landbank_bill->amount = $request->input('amount');
-        $landbank_bill->remarks = $request->input('remarks');
-        $landbank_bill->updated_at = Carbon::now('Asia/Manila');
-        $landbank_bill->save();
-
-        $this->logActivity('Update', $landbank_bill, $user_id);
-
-        return response()->json(['message' => 'LANDBANK Bill updated successfully'], 200);
+     
+        return response()->json(['message' => 'Customer updated successfully'], 200);
     }
 
     

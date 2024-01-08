@@ -86,24 +86,26 @@
       <v-row>
         <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
         <v-data-table align="left" 
-        :headers="customerHeaders" 
-        :items="customers" 
-        disable-pagination
-        single-line
-        :loading="loading">
-          <template v-slot:item.actions="{ item }">
-            <div class="d-flex align-center">
-              <router-link :to="{ name: 'customers.edit', params: { id: item.id} }" v-if="can('customer-edit')">
-                <v-btn class="mr-3" color="amber" size="small">
-                  <v-icon>mdi-pencil</v-icon>Edit
-                </v-btn>
-              </router-link>
-              <v-btn @click="deleteCustomer(item, user.id)" color="red-darken-4" size="small" v-if="can('customer-delete')">
-                <v-icon>mdi-delete</v-icon>Delete
-              </v-btn>
-            </div>
+          :headers="customerHeaders" 
+          :items="customers" 
+          disable-pagination
+          single-line
+          :loading="loading"
+      >
+          <template v-slot:item.actions="{ item: customer }">
+              <div class="d-flex align-center">
+                  <router-link :to="{ name: 'customers.edit', params: { id: customer.id } }" v-if="can('customer-edit')">
+                      <v-btn class="mr-3" color="amber" size="small">
+                          <v-icon>mdi-pencil</v-icon>Edit
+                      </v-btn>
+                  </router-link>
+                  <v-btn @click="deleteCustomer(customer, user.id)" color="red-darken-4" size="small" v-if="can('customer-delete')">
+                      <v-icon>mdi-delete</v-icon>Delete
+                  </v-btn>
+              </div>
           </template>
-        </v-data-table>
+      </v-data-table>
+
       </v-row>
   
     </v-container>

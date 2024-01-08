@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('philam_billings', function (Blueprint $table) {
+        Schema::create('cashiers', function (Blueprint $table) {
             $table->id();
-            $table->string('employee_name');
-            $table->string('employee_id');
-            $table->string('philam_billing_id');
-            $table->float('monthly_premium')->nullable();
-            $table->text('remarks')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('phone_number')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('philam_billings');
+        Schema::dropIfExists('cashiers');
     }
 };

@@ -18,10 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionTableSeeder::class);
         $this->call(CreateAdminUserSeeder::class);
-        $this->call(SystemConfigSeeder::class);
-        $this->call(SystemThemeSeeder::class);
-        // EmployeesLib::factory()->count(1000)->create();
-        // GsisBilling::factory()->count(100000)->create();
         
 
     }

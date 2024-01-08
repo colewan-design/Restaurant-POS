@@ -113,10 +113,9 @@ export default [
                 meta: { breadCrumb: 'customers' }
             },
             {
-                name: 'customers.edit',
-                path: 'customers',
+                 name: 'customers.edit',
+                path: 'customers/edit/:id',
                 component: () => import('../views/admin/customers/edit.vue'),
-                meta: { breadCrumb: 'customers' }
             },
             {
                 name: 'reports.index',
