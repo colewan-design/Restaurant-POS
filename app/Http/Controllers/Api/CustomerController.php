@@ -18,13 +18,16 @@ class CustomerController extends Controller
         // dd($request);
        $user_id = $request->user_id;
         try {
-            $customer_id = 'Cust' . date('YmdHis');
+            $customer_id = 'CUST' .date('YmdHis');
            
             $customer = Customer::create([
 
                 'customer_id' => $customer_id,
-                'customer_name' => $request->customer_name,
-              
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone_number' => $request->phone_number,
+                'address' => $request->address,
+                'email' => $request->email,
                 'created_at' => Carbon::now('Asia/Manila')->toDateTimeString(),
                 'remarks' => $request->remarks
             ]);
@@ -62,26 +65,7 @@ class CustomerController extends Controller
         return response()->json($customer, 200); 
     }
     
-    private function logActivity($action, $landbank_bill, $user_id)
-    {
-        $activity_log_id = 'LANDBANKBILL' . date('YmdHis');
-        $title = 'Customer ' . ucfirst($action) . 'd successfully';
-        $unreadNotification = true;
-        // dd($request->user_id);
-
-        $description = 'Name: ' . $landbank_bill->employee_name . ',' . 'Billing ID: ' . $landbank_bill->landbank_billing_id;
-
-        $activity_log = ActivityLog::create([
-            'activity_log_id' => $activity_log_id,
-            'employee_id' => $landbank_bill->employee_id,
-            'employee_name' => $landbank_bill->employee_name,
-            'title' => $title,
-            'description' => $description,
-            'unreadNotification' => $unreadNotification,
-            'user_id' => $user_id,
-            'created_at' => Carbon::now('Asia/Manila')->toDateTimeString(),
-        ]);
-    }
+  
  
 
     public function update(Request $request, $id)
@@ -93,8 +77,12 @@ class CustomerController extends Controller
 
       
 
-        $customer->customer_name = $request->input('customer_name');
+        $customer->first_name = $request->input('first_name');
+        $customer->last_name = $request->input('last_name');
+        $customer->email = $request->input('email');
         $customer->remarks = $request->input('remarks');
+        $customer->phone_number = $request->input('phone_number');
+        $customer->address = $request->input('address');
         $customer->updated_at = Carbon::now('Asia/Manila');
         $customer->save();
 
@@ -108,16 +96,14 @@ class CustomerController extends Controller
         $user_id = $request->query('admin_id');
         // dd($user_id);
     
-        $landbank_bill = LandbankBilling::find($id);
+        $customer = Customer::find($id);
     
-        if (!$landbank_bill) {
-            return response()->json(['message' => 'LANDBANK Bill not found'], 404);
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
         }
     
-        $landbank_bill->delete();
+        $customer->delete();
     
-        // Log activity for deletion
-        $this->logActivity('Delete', $landbank_bill, $user_id);
     
         return response()->noContent();
     }

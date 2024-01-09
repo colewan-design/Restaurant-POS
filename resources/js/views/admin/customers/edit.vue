@@ -16,11 +16,39 @@
                   
                     <v-text-field
                             variant="solo"
-                            v-model="customer_name"
-                            label="Customer Name"
+                            v-model="first_name"
+                            label="First Name"
                             :rules="[
-                                v => !!v || 'Customer Name is required'
+                                v => !!v || 'First Name is required'
                             ]"
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="last_name"
+                            label="Last Name"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="phone_number"
+                            label="Phone Number"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="address"
+                            label="Address"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="email"
+                            label="Email"
+                         
                     ></v-text-field>
                
                 
@@ -30,9 +58,7 @@
                         variant="solo"
                         v-model="remarks"
                         label="Remarks"
-                        :rules="[
-                            v => !!v || 'Remarks is required'
-                        ]"
+                     
                     ></v-text-field>
                  
                  
@@ -68,10 +94,13 @@
 export default {
   data() {
     return { 
-        customer_name: '',
-        employee_id: '',
+        first_name: '',
+        last_name: '',
+        phone_number: '',
+        address: '',
+        email: '',
         remarks: '',
-        employees: [],
+        customers: [],
     };
   },
   created() {
@@ -90,7 +119,11 @@ export default {
                     const customer = response.data;
 
                     // Populate the form fields with the fetched data
-                    this.customer_name = customer.customer_name;
+                    this.first_name = customer.first_name;
+                    this.last_name = customer.last_name;
+                    this.phone_number = customer.phone_number;
+                    this.address = customer.address;
+                    this.email = customer.email;
                     this.remarks = customer.remarks;
                    
 
@@ -108,7 +141,11 @@ export default {
               
                 const customer_id = this.$route.params.id;
                 const formData = {
-                    customer_name: this.customer_name,
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    phone_number: this.phone_number,
+                    address: this.address,
+                    email: this.email,
                     remarks: this.remarks,
                     user_id: userId,
                 };

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cashier extends Model
+class Customer extends Model
 {
     use HasFactory;
     protected $table = 'customers';
@@ -14,6 +14,8 @@ class Cashier extends Model
         'first_name',
         'last_name',
         'email',
+        'phone_number',
+        'address',
         'remarks'
     ];
 
