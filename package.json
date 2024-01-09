@@ -25,7 +25,6 @@
         "@ckeditor/ckeditor5-vue": "^5.1.0",
         "@mdi/font": "^7.3.67",
         "@vitejs/plugin-basic-ssl": "^1.0.1",
-        "chart.js": "^3.9.1",
         "css.gg": "^2.1.1",
         "hchs-vue-charts": "^1.2.8",
         "js-cookie": "^3.0.5",

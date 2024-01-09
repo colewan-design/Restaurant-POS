@@ -11,7 +11,7 @@ export default defineConfig({
             // host: 'localhost',
             // your IPV4 Address
             // host: '192.168.110.72', 
-            host: '192.168.0.106', 
+            host: '192.168.110.72', 
             // host: '169.254.125.251', // autoconfiguration IPV4 Address
         },
     },

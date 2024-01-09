@@ -15,27 +15,43 @@
                 <v-form @submit.prevent>
                   
                    
-                    <v-autocomplete
-                        variant="solo"
-                        label="Employee"
-                        v-model="selected_employee"
-                        :items="fetched_employee_names"
-                        item-text="employee_name"
-                        item-value="employee_id"
-                        search-input
-                    ></v-autocomplete>
-
-          
-               
-                        <v-text-field
-                            type="number"
+                    <v-text-field
                             variant="solo"
-                            v-model="amount"
-                            label="Amount"
+                            v-model="first_name"
+                            label="First Name"
                             :rules="[
-                                v => !!v || 'Amount is required'
+                                v => !!v || 'First Name is required'
                             ]"
-                        ></v-text-field>
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="last_name"
+                            label="Last Name"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="phone_number"
+                            label="Phone Number"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="address"
+                            label="Address"
+                           
+                    ></v-text-field>
+
+                    <v-text-field
+                            variant="solo"
+                            v-model="email"
+                            label="Email"
+                         
+                    ></v-text-field>
+               
                 
                       
 
@@ -43,9 +59,7 @@
                         variant="solo"
                         v-model="remarks"
                         label="Remarks"
-                        :rules="[
-                            v => !!v || 'Remarks is required'
-                        ]"
+                     
                     ></v-text-field>
                  
                     <v-btn
@@ -56,7 +70,7 @@
                     >
                         Submit
                     </v-btn>
-                  <router-link to="/admin/landbank_billings/">
+                  <router-link to="/admin/cashiers/">
                     <v-btn class="mt-2" color="red-darken-3" @click="clearFields">Cancel</v-btn>
                   </router-link>
                 </v-form>
@@ -72,47 +86,35 @@
 export default {
     data() {
         return {
-            selected_employee: '', 
-            fetched_employee_names: [],
-            employee_name: '',
-            employee_id: '',
-            amount: '',
+            first_name: '',
+            last_name: '',
+            phone_number: '',
+            address: '',
+            email: '',
             remarks: '',
-            employees: [],
-            existingLandbankBilling: [],
+            cashiers: [],
             
         };
     },
-    created() {
-        this.getEmployees(); 
-    },
+   
 
     methods: {
-        async getEmployees() {
-            try {
-                const response = await axios.get('/api/employees_lib/getList');
-                this.employees = response.data;
-                this.fetched_employee_names = this.employees.map(employee => employee.employee_name);
-            } catch (error) {
-                console.error(error);
-            }
-        },
-      
 
         async handleSubmit(userId) {
-            const selectedEmployee = this.employees.find(employee => employee.employee_name === this.selected_employee);
-
-            if (!this.isDuplicate()) {
                 try {
                     const formData = {
-                        employee_id: selectedEmployee.employee_id,
-                        amount: this.amount,
+                     
+                        first_name: this.first_name,
+                        last_name: this.last_name,
+                        email: this.email,
                         remarks: this.remarks,
+                        phone_number: this.phone_number,
+                        address: this.address,
                         user_id: userId,
 
                     };
 
-                    const response = await fetch('/api/landbank_billings/create', {
+                    const response = await fetch('/api/cashier/create', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -122,24 +124,23 @@ export default {
 
                     if (response.ok) {
                         console.log('Data inserted successfully!');
-                        this.$router.push({ name: 'billings.landbank_billings.index', query: { showSuccessDialog: 'true' } });
+                        this.$router.push({ name: 'cashiers.index', query: { showSuccessDialog: 'true' } });
                     } else {
                         console.error('Failed to insert data.');
                     }
                 } catch (error) {
                     console.error('Error:', error);
                 }
-            } else {
-                console.log('landbank is a duplicate.');
-            }
         },
 
-        isDuplicate() {
-            return this.existingLandbankBilling.includes(this.landbank_id);
-        },
+       
 
         clearFields() {
-            this.amount = '';
+            this.first_name = '';
+            this.last_name = '';
+            this.email = '';
+            this.phone_number = '';
+            this.address = '';
             this.remarks = '';
         },
     },

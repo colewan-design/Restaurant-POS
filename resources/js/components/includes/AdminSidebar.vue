@@ -50,7 +50,7 @@
        ></v-list-item>
        <v-list-item
          prepend-icon="mdi-cash-register"
-         to="/admin/contracts_transmittals"
+         to="/admin/cashiers"
          title="Cashiers"
        >
       </v-list-item>

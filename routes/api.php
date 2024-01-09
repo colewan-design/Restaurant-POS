@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CashierController;
 
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -55,6 +56,13 @@ Route::post('customer/create', [CustomerController::class, 'store']);
 Route::get('customer/edit/{id}', [CustomerController::class, 'edit']);
 Route::post('customer/update/{id}', [CustomerController::class, 'update']);
 Route::delete('customer/destroy/{id}', [CustomerController::class, 'destroy']);
+
+Route::get('cashier', [CashierController::class, 'index']);
+Route::post('cashier/create', [CashierController::class, 'store']);
+Route::get('cashier/edit/{id}', [CashierController::class, 'edit']);
+Route::post('cashier/update/{id}', [CashierController::class, 'update']);
+Route::delete('cashier/destroy/{id}', [CashierController::class, 'destroy']);
+
 
 // PDF
 Route::post('pdf_generate', [PDFController::class, 'generatePDF']);
